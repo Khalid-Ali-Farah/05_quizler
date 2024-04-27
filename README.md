@@ -1,6 +1,6 @@
 # Quizler App
 
-Quiz app 
+an app that evaluates your general knowledge through quizzes. You can make your own quiz for others to enjoy, as this is one of the most widely used app categories!
 
 ## Quizler App Preview
 
