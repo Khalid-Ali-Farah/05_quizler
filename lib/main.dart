@@ -13,7 +13,14 @@ class Quizer extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xff1d1a5f),
+        appBar: AppBar(
+          backgroundColor: Color(0xff1d1a5f),
+          title: Text(
+            'Quizler App',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+        ),
         body: SafeArea(
             child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -30,7 +37,7 @@ class QuizerPage extends StatefulWidget {
 }
 
 class _QuizerPageState extends State<QuizerPage> {
-  List<Icon> scoreKeeper = [];
+  List<Widget> scoreKeeper = [];
 
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getCorrectAnswer();
@@ -39,8 +46,18 @@ class _QuizerPageState extends State<QuizerPage> {
       if (quizBrain.isFinished() == true) {
         Alert(
           context: context,
-          title: 'Finshed',
-          desc: 'You\'ve reached the end of quiz.',
+          title: '✅ Finished',
+          desc: 'You\'ve reached the end of the quiz.',
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Close",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pop(context),
+              color: Colors.red, // Change the button color here
+            ),
+          ],
         ).show();
 
         quizBrain.rest();
@@ -48,16 +65,34 @@ class _QuizerPageState extends State<QuizerPage> {
       } else {
         if (userPickedAnswer == correctAnswer) {
           scoreKeeper.add(
-            const Icon(
-              Icons.check,
-              color: Colors.green,
+            Padding(
+              padding: const EdgeInsets.only(right: 5.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(300),
+                ),
+                child: Icon(
+                  Icons.check,
+                  color: Colors.white,
+                ),
+              ),
             ),
           );
         } else {
           scoreKeeper.add(
-            const Icon(
-              Icons.close,
-              color: Colors.red,
+            Padding(
+              padding: const EdgeInsets.only(right: 5.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(300),
+                ),
+                child: Icon(
+                  Icons.close,
+                  color: Colors.white,
+                ),
+              ),
             ),
           );
         }
@@ -72,71 +107,92 @@ class _QuizerPageState extends State<QuizerPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Text(
+          ' Your Score:',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Row(
+            children: scoreKeeper,
+          ),
+        ),
         Expanded(
           flex: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Center(
-              child: Text(
-                quizBrain.getQuestionText(),
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 25,
-                  color: Colors.white,
-                ),
-              ),
+          child: Container(
+            margin: EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(26),
             ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextButton(
-              onPressed: () {
-                checkAnswer(true);
-              },
-              child: const Text(
-                'True',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                ),
-              ),
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0.0),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+                child: Text(
+                  quizBrain.getQuestionText(),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 25,
+                    color: Colors.black,
                   ),
                 ),
-                backgroundColor: MaterialStateProperty.all(Colors.green),
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextButton(
-              onPressed: () {
-                checkAnswer(false);
-              },
-              child: const Text(
-                'False',
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              ),
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0.0),
-                  ),
-                ),
-                backgroundColor: MaterialStateProperty.all(Colors.red),
               ),
             ),
           ),
         ),
         Row(
-          children: scoreKeeper,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: TextButton(
+                  onPressed: () {
+                    checkAnswer(true);
+                  },
+                  child: const Text(
+                    'True',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    backgroundColor: MaterialStateProperty.all(Colors.green),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: TextButton(
+                  onPressed: () {
+                    checkAnswer(false);
+                  },
+                  child: const Text(
+                    'False',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    backgroundColor: MaterialStateProperty.all(Colors.red),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
